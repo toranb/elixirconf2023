@@ -23,7 +23,7 @@ defmodule Example.TextClassification do
 
     Nx.Serving.new(
       fn defn_options ->
-        scores_fun =
+        serving_scores_fun =
           Shared.compile_or_jit(scores_fun, defn_options, compile != nil, fn ->
             inputs = %{
               "input_ids" => Nx.template({@batch_size, @sequence_length}, :u32),
@@ -35,7 +35,7 @@ defmodule Example.TextClassification do
 
         fn inputs ->
           inputs = Shared.maybe_pad(inputs, @batch_size)
-          scores_fun.(params, inputs)
+          serving_scores_fun.(params, inputs)
         end
       end,
       defn_options
