@@ -1,6 +1,4 @@
 defmodule Example.Tune do
-  NimbleCSV.define(DataParser, separator: ",", escape: "\"")
-
   @model "roberta-base"
 
   def train() do

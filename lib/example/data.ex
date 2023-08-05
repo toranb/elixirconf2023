@@ -1,4 +1,6 @@
 defmodule Example.Data do
+  NimbleCSV.define(DataParser, separator: ",", escape: "\"")
+
   def get_data(tokenizer, filename) do
     batch_size = 32
     sequence_length = 64
