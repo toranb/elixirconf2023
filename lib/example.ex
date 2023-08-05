@@ -6,6 +6,10 @@ defmodule Example do
   end
 
   def evaluate() do
+    Example.Evaluate.evaluate()
+  end
+
+  def cancellations() do
     Example.Evaluate.cancellations()
   end
 

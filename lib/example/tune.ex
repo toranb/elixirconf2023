@@ -16,7 +16,7 @@ defmodule Example.Tune do
     {:ok, model} = Bumblebee.load_model({:hf, @model}, spec: spec)
     {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, @model})
 
-    train_data = get_training_data(tokenizer)
+    train_data = Example.Data.get_data(tokenizer, "priv/data/demo.csv")
 
     %{model: model, params: params} = model
 
@@ -40,30 +40,5 @@ defmodule Example.Tune do
 
     Nx.serialize(trained_model_state)
     |> then(&File.write!("cancel.axon", &1))
-  end
-
-  @doc false
-  def get_training_data(tokenizer) do
-    batch_size = 32
-    sequence_length = 64
-
-    "priv/data/training.csv"
-    |> File.stream!()
-    |> DataParser.parse_stream()
-    |> Stream.chunk_every(batch_size)
-    |> Stream.map(fn batch ->
-      [labels, text] =
-        batch
-        |> Enum.reduce([[], []], fn [label, txt], acc ->
-          l = Enum.at(acc, 0)
-          t = Enum.at(acc, 1)
-          labels = l ++ [label |> String.to_integer()]
-          text = t ++ [txt]
-          [labels, text]
-        end)
-
-      tokenized = Bumblebee.apply_tokenizer(tokenizer, text, length: sequence_length)
-      {tokenized, Nx.stack(labels)}
-    end)
   end
 end
