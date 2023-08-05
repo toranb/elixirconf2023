@@ -20,9 +20,6 @@ defmodule Example.Tune do
 
     %{model: model, params: params} = model
 
-    [{input, _}] = Enum.take(train_data, 1)
-    Axon.get_output_shape(model, input)
-
     logits_model = Axon.nx(model, & &1.logits)
 
     loss =
