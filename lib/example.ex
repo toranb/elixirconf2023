@@ -23,6 +23,8 @@ defmodule Example do
   end
 
   def embeddings(token_ids) when is_list(token_ids) do
+    Nx.default_backend(EXLA.Backend)
+
     {:ok, %{model: model, params: params}} =
       Bumblebee.load_model({:hf, "bert-base-cased"},
         architecture: :base
