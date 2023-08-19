@@ -3,7 +3,7 @@ defmodule Example.Data do
 
   def get_data(tokenizer, filename) do
     batch_size = 32
-    sequence_length = 64
+    sequence_length = 32
 
     filename
     |> File.stream!()

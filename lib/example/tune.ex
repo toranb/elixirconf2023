@@ -27,7 +27,7 @@ defmodule Example.Tune do
         sparse: true
       )
 
-    optimizer = Axon.Optimizers.adam(2.0e-5)
+    optimizer = Polaris.Optimizers.adam(learning_rate: 2.0e-5)
     accuracy = &Axon.Metrics.accuracy(&1, &2, from_logits: true, sparse: true)
 
     trained_model_state =
