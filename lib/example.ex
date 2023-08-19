@@ -23,6 +23,11 @@ defmodule Example do
   end
 
   def embeddings(token_ids) when is_list(token_ids) do
+    Application.put_env(:exla, :clients,
+      cuda: [platform: :cuda, preallocate: false],
+      host: [platform: :host]
+    )
+
     Nx.default_backend(EXLA.Backend)
 
     {:ok, %{model: model, params: params}} =
