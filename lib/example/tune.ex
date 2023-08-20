@@ -2,8 +2,6 @@ defmodule Example.Tune do
   @model "roberta-base"
 
   def train() do
-    Nx.default_backend(EXLA.Backend)
-
     {:ok, spec} =
       Bumblebee.load_spec({:hf, @model},
         architecture: :for_sequence_classification

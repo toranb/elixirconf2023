@@ -6,8 +6,6 @@ defmodule Example.Evaluate do
   @model "roberta-base"
 
   def evaluate() do
-    Nx.default_backend(EXLA.Backend)
-
     {:ok, spec} =
       Bumblebee.load_spec({:hf, @model},
         architecture: :for_sequence_classification
@@ -32,8 +30,6 @@ defmodule Example.Evaluate do
   end
 
   def cancellations() do
-    Nx.default_backend(EXLA.Backend)
-
     "priv/data/july.csv"
     |> File.stream!()
     |> OrdersParser.parse_stream()
