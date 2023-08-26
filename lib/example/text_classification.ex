@@ -52,7 +52,7 @@ defmodule Example.TextClassification do
 
       {Nx.Batch.concatenate([inputs]), multi?}
     end)
-    |> Nx.Serving.client_postprocessing(fn scores, _metadata, multi? ->
+    |> Nx.Serving.client_postprocessing(fn {scores, _metadata}, multi? ->
       for scores <- Bumblebee.Utils.Nx.batch_to_list(scores) do
         result = scores |> Nx.argmax() |> Nx.to_flat_list()
 
