@@ -9,12 +9,10 @@ defmodule Example.Tune do
 
     spec = Bumblebee.configure(spec, num_labels: 8)
 
-    {:ok, model} = Bumblebee.load_model({:hf, @model}, spec: spec)
+    {:ok, model_info} = Bumblebee.load_model({:hf, @model}, spec: spec)
     {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, @model})
 
-    train_data = Example.Data.get_data(tokenizer, "priv/data/demo.csv")
-
-    %{model: model, params: params} = model
+    %{model: model, params: params} = model_info
 
     logits_model = Axon.nx(model, & &1.logits)
 
@@ -27,6 +25,8 @@ defmodule Example.Tune do
 
     optimizer = Polaris.Optimizers.adam(learning_rate: 2.0e-5)
     accuracy = &Axon.Metrics.accuracy(&1, &2, from_logits: true, sparse: true)
+
+    train_data = Example.Data.get_data(tokenizer, "priv/data/training.csv")
 
     trained_model_state =
       logits_model
