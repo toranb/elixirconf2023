@@ -7,6 +7,16 @@ defmodule Example.Application do
 
   @impl true
   def start(_type, _args) do
+    children = [
+      {Nx.Serving, name: ExampleClassification, serving: classification()},
+      {Nx.Serving, name: ExampleEmbeddings, serving: embeddings()}
+    ]
+
+    opts = [strategy: :one_for_one, name: Example.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+
+  def classification() do
     {:ok, spec} =
       Bumblebee.load_spec({:hf, @model},
         architecture: :for_sequence_classification
@@ -21,17 +31,20 @@ defmodule Example.Application do
 
     {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, @model})
 
-    classification =
-      Example.TextClassification.text_classification(
-        %{model: bert_model, params: params, spec: spec},
-        tokenizer
-      )
+    Example.TextClassification.text_classification(
+      %{model: bert_model, params: params, spec: spec},
+      tokenizer
+    )
+  end
 
-    children = [
-      {Nx.Serving, name: ExampleClassification, serving: classification}
-    ]
+  def embeddings() do
+    model = "intfloat/e5-large"
+    {:ok, model_info} = Bumblebee.load_model({:hf, model})
+    {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, model})
 
-    opts = [strategy: :one_for_one, name: Example.Supervisor]
-    Supervisor.start_link(children, opts)
+    Bumblebee.Text.TextEmbedding.text_embedding(model_info, tokenizer,
+      compile: [batch_size: 1, sequence_length: 8],
+      defn_options: [compiler: EXLA]
+    )
   end
 end
