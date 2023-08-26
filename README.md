@@ -34,4 +34,4 @@ The [cancellations](https://github.com/toranb/elixirconf2023/blob/main/lib/examp
 Example.cancellations()
 ```
 
-To use this you must first fine tune the model to generate `cancel.axon` then you need to uncomment [this](https://github.com/toranb/elixirconf2023/blob/main/mix.exs#L17) in the mix.exs file and run `iex -S mix run`
+To use the `cancellations` function above you must first fine tune the model to generate `cancel.axon` then you need to uncomment [this](https://github.com/toranb/elixirconf2023/blob/main/mix.exs#L17) in the mix.exs file and run `iex -S mix run`
