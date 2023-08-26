@@ -1,6 +1,6 @@
 # Fine Tuning Language Models With Axon
 
-**The fine tuning, evaluation, Nx serving and embedding code from ElixirConf 2023
+The fine tuning, evaluation, Nx serving and embedding code from ElixirConf 2023
 
 ## Tune
 
