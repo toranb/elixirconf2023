@@ -7,9 +7,9 @@ defmodule Example.Application do
 
   @impl true
   def start(_type, _args) do
+    #{Nx.Serving, name: ExampleEmbeddings, serving: embeddings()}
     children = [
-      {Nx.Serving, name: ExampleClassification, serving: classification()},
-      {Nx.Serving, name: ExampleEmbeddings, serving: embeddings()}
+      {Nx.Serving, name: ExampleClassification, serving: classification()}
     ]
 
     opts = [strategy: :one_for_one, name: Example.Supervisor]
@@ -37,14 +37,14 @@ defmodule Example.Application do
     )
   end
 
-  def embeddings() do
-    model = "intfloat/e5-large"
-    {:ok, model_info} = Bumblebee.load_model({:hf, model})
-    {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, model})
+  # def embeddings() do
+  #   model = "intfloat/e5-large"
+  #   {:ok, model_info} = Bumblebee.load_model({:hf, model})
+  #   {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, model})
 
-    Bumblebee.Text.TextEmbedding.text_embedding(model_info, tokenizer,
-      compile: [batch_size: 1, sequence_length: 8],
-      defn_options: [compiler: EXLA]
-    )
-  end
+  #   Bumblebee.Text.TextEmbedding.text_embedding(model_info, tokenizer,
+  #     compile: [batch_size: 1, sequence_length: 8],
+  #     defn_options: [compiler: EXLA]
+  #   )
+  # end
 end
