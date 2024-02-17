@@ -16,7 +16,7 @@ defmodule Example do
   def get_token_ids() do
     # [101, 1996, 3976, 2001, 25506, 102]
     text = "the price was outrageous"
-    {:ok, tokenizer} = Tokenizers.Tokenizer.from_pretrained("bert-base-uncased")
+    {:ok, tokenizer} = Tokenizers.Tokenizer.from_pretrained("google-bert/bert-base-uncased")
     {:ok, encoding} = Tokenizers.Tokenizer.encode(tokenizer, text)
     Tokenizers.Encoding.get_tokens(encoding) |> IO.inspect(label: "tokens")
     Tokenizers.Encoding.get_ids(encoding) |> IO.inspect(label: "token ids")
